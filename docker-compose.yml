@@ -1,0 +1,37 @@
+# AItomation MCP relay - one process, one project.
+#
+# Start:    docker compose up -d
+# Logs:     docker compose logs -f
+# Upgrade:  docker compose pull && docker compose up -d
+# Stop:     docker compose stop
+#
+# Do not use "docker compose down -v". The -v flag deletes the named
+# volume. Three projects need three processes (see
+# docker-compose.multi-project.example.yml). Team Space on this machine
+# stays a separate process.
+
+services:
+  mcp-relay:
+    image: ghcr.io/stanislavmandrik621/aitomation-mcp-relay:latest
+    # build:
+    #   context: .
+    container_name: mcp-relay
+    restart: unless-stopped
+    ports:
+      - '8790:8790'
+    environment:
+      MCP_RELAY_HOST: '0.0.0.0'
+      MCP_RELAY_PORT: '8790'
+      MCP_RELAY_DATA_DIR: '/data'
+      MCP_RELAY_PAIR_SECRET: '${MCP_RELAY_PAIR_SECRET:-}'
+      MCP_RELAY_PUBLIC_URL: '${MCP_RELAY_PUBLIC_URL:-}'
+      MCP_RELAY_OAUTH_REDIRECT_URIS: '${MCP_RELAY_OAUTH_REDIRECT_URIS:-[]}'
+      MCP_RELAY_CIMD_HOSTS: '${MCP_RELAY_CIMD_HOSTS:-[]}'
+    volumes:
+      - mcp-relay-data:/data
+    cpus: 0.5
+    mem_limit: 256m
+    pids_limit: 32
+
+volumes:
+  mcp-relay-data:

@@ -1,0 +1,60 @@
+# Three Mode B projects = three processes. Copy this file and give each
+# service its own public hostname on the reverse proxy. Do not put
+# /project-a and /project-b on one process.
+#
+# Team Space on the same machine is a fourth process (its own compose
+# file and its own port). Do not add it to this file.
+
+services:
+  mcp-relay-a:
+    image: ghcr.io/stanislavmandrik621/aitomation-mcp-relay:latest
+    restart: unless-stopped
+    ports:
+      - '8790:8790'
+    environment:
+      MCP_RELAY_HOST: '0.0.0.0'
+      MCP_RELAY_PORT: '8790'
+      MCP_RELAY_DATA_DIR: '/data'
+      MCP_RELAY_PAIR_SECRET: '${MCP_RELAY_PAIR_SECRET_A:-}'
+      MCP_RELAY_PUBLIC_URL: '${MCP_RELAY_PUBLIC_URL_A:-}'
+      MCP_RELAY_OAUTH_REDIRECT_URIS: '${MCP_RELAY_OAUTH_REDIRECT_URIS_A:-[]}'
+      MCP_RELAY_CIMD_HOSTS: '${MCP_RELAY_CIMD_HOSTS_A:-[]}'
+    volumes:
+      - mcp-relay-data-a:/data
+
+  mcp-relay-b:
+    image: ghcr.io/stanislavmandrik621/aitomation-mcp-relay:latest
+    restart: unless-stopped
+    ports:
+      - '8791:8790'
+    environment:
+      MCP_RELAY_HOST: '0.0.0.0'
+      MCP_RELAY_PORT: '8790'
+      MCP_RELAY_DATA_DIR: '/data'
+      MCP_RELAY_PAIR_SECRET: '${MCP_RELAY_PAIR_SECRET_B:-}'
+      MCP_RELAY_PUBLIC_URL: '${MCP_RELAY_PUBLIC_URL_B:-}'
+      MCP_RELAY_OAUTH_REDIRECT_URIS: '${MCP_RELAY_OAUTH_REDIRECT_URIS_B:-[]}'
+      MCP_RELAY_CIMD_HOSTS: '${MCP_RELAY_CIMD_HOSTS_B:-[]}'
+    volumes:
+      - mcp-relay-data-b:/data
+
+  mcp-relay-c:
+    image: ghcr.io/stanislavmandrik621/aitomation-mcp-relay:latest
+    restart: unless-stopped
+    ports:
+      - '8792:8790'
+    environment:
+      MCP_RELAY_HOST: '0.0.0.0'
+      MCP_RELAY_PORT: '8790'
+      MCP_RELAY_DATA_DIR: '/data'
+      MCP_RELAY_PAIR_SECRET: '${MCP_RELAY_PAIR_SECRET_C:-}'
+      MCP_RELAY_PUBLIC_URL: '${MCP_RELAY_PUBLIC_URL_C:-}'
+      MCP_RELAY_OAUTH_REDIRECT_URIS: '${MCP_RELAY_OAUTH_REDIRECT_URIS_C:-[]}'
+      MCP_RELAY_CIMD_HOSTS: '${MCP_RELAY_CIMD_HOSTS_C:-[]}'
+    volumes:
+      - mcp-relay-data-c:/data
+
+volumes:
+  mcp-relay-data-a:
+  mcp-relay-data-b:
+  mcp-relay-data-c:
