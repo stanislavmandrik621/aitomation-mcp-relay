@@ -1,0 +1,29 @@
+{
+  "name": "@aitomation/mcp-relay",
+  "version": "0.1.0",
+  "private": false,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stanislavmandrik621/aitomation-mcp-relay.git"
+  },
+  "homepage": "https://github.com/stanislavmandrik621/aitomation-mcp-relay",
+  "type": "module",
+  "description": "User-hosted HTTPS edge for AItomation inbound AI connectors. One process, one device, one project. No tool execution on this process.",
+  "main": "./dist/server.js",
+  "types": "./dist/server.d.ts",
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist",
+    "test": "tsx tests/health-accept.ts && tsx tests/default-port.ts && tsx tests/t18-oauth-pair.ts && tsx tests/oauth-source.ts && tsx tests/identity-timing.ts && tsx tests/ssrf-redirects.ts && tsx tests/pair-oauth-leftover.ts && tsx tests/listen-leftover.ts && tsx tests/authorization-lifecycle.ts && tsx tests/protocol-compatibility.ts && tsx tests/chatgpt-auth-compatibility.ts && tsx tests/generic-client-policy.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
